@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            background: #343a40;
+            color: #fff;
+            transition: all 0.3s;
+        }
+        #sidebar .nav-link, #sidebar .nav-link:hover {
+            color: #fff;
+        }
+        #content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <nav id="sidebar" class="bg-dark">
+            <div class="sidebar-header p-3">
+                <h3>Dashboard</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="#" id="home-link">Home</a>
+                </li>
+                <li>
+                    <a href="#" id="add-task-link">Add Task</a>
+                </li>
+                <li>
+                    <a href="#" id="chart-link">Chart</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div id="content">
+            <div id="page-content"></div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function loadPage(page) {
+                $('#page-content').load(page);
+            }
+
+            $('#home-link').click(function() {
+                loadPage('home.html');
+            });
+
+            $('#add-task-link').click(function() {
+                loadPage('addTask.html');
+            });
+
+            $('#chart-link').click(function() {
+                loadPage('chart.html');
+            });
+
+            // Load home page by default
+            $('#home-link').click();
+        });
+    </script>
+</body>
+</html>

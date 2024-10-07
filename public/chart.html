@@ -1,0 +1,21 @@
+<h2>Weekly Task Chart</h2>
+<ul id="weekly-task-list" class="list-group"></ul>
+
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "/tasks/week",
+            method: "GET",
+            success: function(data) {
+                const weeklyTaskList = $('#weekly-task-list');
+                weeklyTaskList.empty();
+                data.forEach(task => {
+                    weeklyTaskList.append(`<li class="list-group-item">${task.name} - ${task.status}: ${task.description}</li>`);
+                });
+            },
+            error: function(err) {
+                console.error("Error fetching weekly tasks", err);
+            }
+        });
+    });
+</script>

@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-md-6">
+        <h2>Add Task</h2>
+        <form id="task-form">
+            <div class="mb-3">
+                <input type="text" name="name" class="form-control" placeholder="Task Name" required>
+            </div>
+            <div class="mb-3">
+                <textarea name="description" class="form-control" placeholder="Description" required></textarea>
+            </div>
+            <div class="mb-3">
+                <select name="repeat" class="form-control" required>
+                    <option value="every day">Every Day</option>
+                    <option value="every week">Every Week</option>
+                    <option value="every month">Every Month</option>
+                    <option value="every sunday">Every Sunday</option>
+                    <option value="every monday">Every Monday</option>
+                    <option value="every tuesday">Every Tuesday</option>
+                    <option value="every wednesday">Every Wednesday</option>
+                    <option value="every thursday">Every Thursday</option>
+                    <option value="every friday">Every Friday</option>
+                    <option value="every saturday">Every Saturday</option>
+                </select>
+            </div>
+            <!-- Start Date Field -->
+            <div class="mb-3">
+                <input type="text" name="startDate" id="startDate" class="form-control" placeholder="Select Start Date" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Task</button>
+        </form>
+    </div>
+</div>
+
+<!-- Flatpickr library -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+    // Initialize Flatpickr on the start date input
+    flatpickr("#startDate", {
+        enableTime: true,  // Enable time selection
+        dateFormat: "Y-m-d H:i",  // Format for date and time
+        defaultDate: new Date(),  // Default date is the current date and time
+    });
+
+    // Handle form submission
+    $('#task-form').submit(function(event) {
+        event.preventDefault();
+        const formData = $(this).serialize();
+        $.ajax({
+            url: '/addTask',
+            method: 'POST',
+            data: formData,
+            success: function(response) {
+                alert(response.message);
+                $('#task-form')[0].reset();
+                // Optional: Reset Flatpickr to the current date
+                flatpickr("#startDate", {
+                    defaultDate: new Date(),
+                });
+            },
+            error: function(err) {
+                console.error("Error adding task", err);
+                alert("Error adding task: " + (err.responseJSON ? err.responseJSON.message : "Unknown error"));
+            }
+        });
+    });
+</script>

@@ -1,0 +1,46 @@
+<%- contentFor('body') %>
+
+<h2>Today's Tasks</h2>
+<div id="task-list" class="list-group" >
+  <% if (tasks && tasks.length > 0) { %>
+    <% tasks.forEach(task => { %>
+      <div class="list-group-item" >
+        <h5 class="mb-1"><%= task.name %></h5>
+        <p class="mb-1"><strong>Description:</strong> <%= task.description %></p>
+        <p class="mb-1"><strong>Status:</strong> 
+          <select class="status-select" data-id="<%= task._id %>">
+            <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Pending</option>
+            <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+          </select>
+        </p>
+        <p class="mb-1"><strong>Repeat:</strong> <%= task.repeat || 'N/A' %></p>
+        <p class="mb-1"><strong>Created:</strong> <%= task.createdTime ? new Date(task.createdTime).toLocaleString() : 'N/A' %></p>
+        <p class="mb-1"><strong>Last Updated:</strong> <%= task.lastUpdateTime ? new Date(task.lastUpdateTime).toLocaleString() : 'N/A' %></p>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div class="list-group-item">No tasks found</div>
+  <% } %>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.status-select').on('change', function() {
+      const taskId = $(this).data('id');
+      const newStatus = $(this).val();
+      
+      $.ajax({
+        url: "/updateTaskStatus",
+        method: "POST",
+        data: { taskId, status: newStatus },
+        success: function(response) {
+          console.log("Task status updated:", response);
+        },
+        error: function(err) {
+          console.error("Error updating task status:", err);
+        }
+      });
+    });
+  });
+</script>
